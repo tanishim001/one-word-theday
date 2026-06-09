@@ -1,0 +1,25 @@
+{
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "db:check": "tsx scripts/check-db.ts"
+  },
+  "dependencies": {
+    "@next/env": "^16.2.7",
+    "@types/sql.js": "^1.4.11",
+    "next": "latest",
+    "postgres": "^3.4.9",
+    "react": "latest",
+    "react-dom": "latest",
+    "sql.js": "^1.14.1",
+    "tsx": "^4.22.4"
+  },
+  "devDependencies": {
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "typescript": "latest"
+  }
+}

@@ -1,0 +1,8 @@
+node_modules
+.next
+data/words.db
+.env
+.env*.local
+.vercel
+work
+outputs
