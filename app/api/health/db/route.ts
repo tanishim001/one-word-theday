@@ -10,7 +10,7 @@ export async function GET() {
 
   return NextResponse.json({
     ok: true,
-    database: process.env.DATABASE_URL ? "postgres" : "local-sqlite",
+    database: process.env.DATABASE_URL || process.env.POSTGRES_URL ? "postgres" : "local-sqlite",
     wordCount: payload.words.length,
     totalVotes,
     todayWordId: payload.todayWordId,

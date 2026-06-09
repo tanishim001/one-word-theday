@@ -4,16 +4,17 @@ import { seedWords } from "../data/seedWords";
 
 loadEnvConfig(process.cwd());
 
-const databaseUrl = process.env.DATABASE_URL;
+const databaseUrl = process.env.DATABASE_URL ?? process.env.POSTGRES_URL;
 
 if (!databaseUrl) {
   console.error(
     [
-      "DATABASE_URL is not set.",
+      "DATABASE_URL or POSTGRES_URL is not set.",
       "",
       "1. Create a Postgres database, for example on Neon.",
       "2. Copy the pooled connection string.",
       "3. Create .env.local from .env.example and paste it as DATABASE_URL.",
+      "   If Vercel injects POSTGRES_URL, that works too.",
       "4. Run npm run db:check again.",
     ].join("\n"),
   );

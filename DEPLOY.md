@@ -15,6 +15,8 @@ Create `.env.local` in the project root:
 DATABASE_URL="postgres://USER:PASSWORD@HOST:PORT/DATABASE?sslmode=require"
 ```
 
+`DATABASE_URL` is preferred. `POSTGRES_URL` also works if your provider injects it.
+
 Then run:
 
 ```bash
@@ -40,13 +42,13 @@ You can also check:
 http://localhost:3000/api/health/db
 ```
 
-It should return `"database":"postgres"` when `DATABASE_URL` is loaded.
+It should return `"database":"postgres"` when `DATABASE_URL` or `POSTGRES_URL` is loaded.
 
 ## 4. Deploy on Vercel
 
 1. Push the project to GitHub.
 2. Import the repository in Vercel.
-3. Add `DATABASE_URL` in Project Settings > Environment Variables.
+3. Add `DATABASE_URL` in Project Settings > Environment Variables, or connect a Vercel Marketplace Postgres integration that injects `POSTGRES_URL`.
 4. Deploy.
 5. Open `/api/health/db` on the deployment URL and confirm `"database":"postgres"`.
 6. Open the site and confirm words load and votes persist.

@@ -24,16 +24,22 @@ const globalForPostgres = globalThis as typeof globalThis & {
   wordAppSql?: postgres.Sql;
 };
 
+function getDatabaseUrl() {
+  return process.env.DATABASE_URL ?? process.env.POSTGRES_URL;
+}
+
 function shouldUsePostgres() {
-  return Boolean(process.env.DATABASE_URL);
+  return Boolean(getDatabaseUrl());
 }
 
 function getPostgresClient() {
-  if (!process.env.DATABASE_URL) {
-    throw new Error("DATABASE_URL is not set.");
+  const databaseUrl = getDatabaseUrl();
+
+  if (!databaseUrl) {
+    throw new Error("DATABASE_URL or POSTGRES_URL is not set.");
   }
 
-  globalForPostgres.wordAppSql ??= postgres(process.env.DATABASE_URL, {
+  globalForPostgres.wordAppSql ??= postgres(databaseUrl, {
     max: 1,
   });
 

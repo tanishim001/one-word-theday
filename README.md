@@ -21,13 +21,15 @@ Open `http://localhost:3000`.
 
 ## Database
 
-Without `DATABASE_URL`, the app uses `data/words.db` as a local SQLite fallback.
+Without `DATABASE_URL` or `POSTGRES_URL`, the app uses `data/words.db` as a local SQLite fallback.
 
 For production, create `.env.local`:
 
 ```env
 DATABASE_URL="postgres://USER:PASSWORD@HOST:PORT/DATABASE?sslmode=require"
 ```
+
+`POSTGRES_URL` also works if your hosting provider injects that name.
 
 Then check the connection and seed data:
 
