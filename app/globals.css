@@ -292,6 +292,10 @@ h1 {
   margin-top: 18px;
 }
 
+.extra-words {
+  margin-top: 18px;
+}
+
 .history-heading {
   display: flex;
   align-items: center;
@@ -309,6 +313,71 @@ h1 {
 .history-heading span {
   font-size: 0.82rem;
   font-weight: 800;
+}
+
+.link-button {
+  min-height: 34px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.82);
+  color: var(--green-dark);
+  cursor: pointer;
+  padding: 0 10px;
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.extra-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.extra-item {
+  display: flex;
+  min-height: 64px;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+  color: var(--ink);
+  cursor: pointer;
+  padding: 11px 12px;
+  text-align: left;
+  box-shadow: 0 8px 24px rgba(24, 32, 28, 0.07);
+}
+
+.extra-item strong,
+.extra-item small {
+  display: block;
+}
+
+.extra-item strong {
+  margin-bottom: 4px;
+  font-size: 1.05rem;
+}
+
+.extra-item small {
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.status-dot {
+  flex: 0 0 auto;
+  border-radius: 999px;
+  background: #eef2ee;
+  color: var(--muted);
+  padding: 5px 9px;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.status-dot.answered {
+  background: #e6f1ec;
+  color: var(--green-dark);
 }
 
 .history-list {

@@ -8,6 +8,7 @@ const clientIdStorageKey = "word-client-id";
 export default function Home() {
   const [words, setWords] = useState<WordWithVotes[]>([]);
   const [selectedWordId, setSelectedWordId] = useState("");
+  const [extraWordIds, setExtraWordIds] = useState<string[]>([]);
   const [answer, setAnswer] = useState<Answer | null>(null);
   const [clientId, setClientId] = useState("");
   const [loading, setLoading] = useState(true);
@@ -23,6 +24,7 @@ export default function Home() {
       .then((payload) => {
         setWords(payload.words);
         setSelectedWordId(payload.todayWordId);
+        setExtraWordIds(pickRandomWordIds(payload.words, payload.todayWordId, 5));
       })
       .catch(() => setError("単語データを読み込めませんでした。"))
       .finally(() => setLoading(false));
@@ -31,6 +33,14 @@ export default function Home() {
   const selectedWord = useMemo(
     () => words.find((word) => word.id === selectedWordId) ?? words[0],
     [selectedWordId, words],
+  );
+
+  const extraWords = useMemo(
+    () =>
+      extraWordIds
+        .map((wordId) => words.find((word) => word.id === wordId))
+        .filter((word): word is WordWithVotes => Boolean(word)),
+    [extraWordIds, words],
   );
 
   useEffect(() => {
@@ -81,6 +91,19 @@ export default function Home() {
   const handleCopy = async () => {
     await navigator.clipboard.writeText(shareText);
     setCopied(true);
+  };
+
+  const handleRefreshExtraWords = () => {
+    if (!selectedWord) {
+      return;
+    }
+
+    setExtraWordIds(pickRandomWordIds(words, selectedWord.id, 5));
+  };
+
+  const handleSelectWord = (wordId: string) => {
+    setSelectedWordId(wordId);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -184,6 +207,36 @@ export default function Home() {
           )}
         </section>
 
+        {extraWords.length > 0 && (
+          <section className="extra-words" aria-label="追加のランダム単語">
+            <div className="history-heading">
+              <h2>追加で5語</h2>
+              <button className="link-button" type="button" onClick={handleRefreshExtraWords}>
+                ランダム更新
+              </button>
+            </div>
+
+            <div className="extra-list">
+              {extraWords.map((word) => (
+                <button
+                  className="extra-item"
+                  type="button"
+                  key={word.id}
+                  onClick={() => handleSelectWord(word.id)}
+                >
+                  <span>
+                    <strong>{word.word}</strong>
+                    <small>{word.reading}</small>
+                  </span>
+                  <span className={word.clientAnswer ? "status-dot answered" : "status-dot"}>
+                    {word.clientAnswer ? "回答済" : "未回答"}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </section>
+        )}
+
         {words.length > 0 && (
           <section className="history" aria-label="過去の単語">
             <div className="history-heading">
@@ -196,7 +249,7 @@ export default function Home() {
                   className="history-item"
                   type="button"
                   key={word.id}
-                  onClick={() => setSelectedWordId(word.id)}
+                  onClick={() => handleSelectWord(word.id)}
                 >
                   <span>
                     <strong>{word.word}</strong>
@@ -243,6 +296,15 @@ function getOrCreateClientId() {
 
   window.localStorage.setItem(clientIdStorageKey, nextClientId);
   return nextClientId;
+}
+
+function pickRandomWordIds(words: WordWithVotes[], currentWordId: string, count: number) {
+  return words
+    .filter((word) => word.id !== currentWordId)
+    .map((word) => ({ word, sort: Math.random() }))
+    .sort((a, b) => a.sort - b.sort)
+    .slice(0, count)
+    .map(({ word }) => word.id);
 }
 
 function PollRow({
